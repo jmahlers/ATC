@@ -59,7 +59,7 @@ if __name__ == "__main__":
     target_snr = 5
 
     # Array of evolution times
-    evolution_times = np.linspace(0, 1e-1, 100)  # 0 to 1 second
+    evolution_times = np.linspace(1e-4, 1e-1, 100)
 
     # Calculate time to SNR for each evolution time
     times_to_snr = np.array([
@@ -68,12 +68,26 @@ if __name__ == "__main__":
     ])
 
     # Plot results
-    plt.figure(figsize=(10, 6))
-    plt.plot(evolution_times*1e3, times_to_snr/60, linewidth=2)
-    plt.xlabel("Evolution Time (ms)")
-    plt.ylabel("Total Averaging Time (min)")
-    plt.title(r"Total Averaging Time to Achieve $\sigma = 5$")
-    plt.grid(True, alpha=0.3)
+    fig, ax1 = plt.subplots(figsize=(16, 8))
+    ax1.plot(evolution_times*1e3, times_to_snr/60, linewidth=2)
+    ax1.set_xlabel("Evolution Time (ms)", fontsize=20)
+    ax1.set_ylabel("Averaging Time (min)", fontsize=20)
+    ax1.tick_params(axis='both', labelsize=18)
+    ax1.set_title(r"Averaging Time Per Measurement Point for $\sigma = 5$", fontsize=40)
+    ax1.set_xlim(1, 105)
+    ax1.grid(True, alpha=0.3)
+
+    # Add secondary x-axis for inverse evolution time (frequency in kHz)
+    ax2 = ax1.twiny()
+    ax2.set_xlabel("Decay Frequency (Hz)", fontsize=20)
+    ax2.tick_params(axis='x', labelsize=18)
+    
+    # Set the limits and ticks for the secondary axis
+    # Convert evolution time limits to frequency limits (in kHz)
+    freq_min = 1 / (105e-3)  # 1 / max_evo_time_in_seconds
+    freq_max = 1 / (1e-3)     # 1 / min_evo_time_in_seconds
+    ax2.set_xlim(freq_max, freq_min)
+    
     plt.tight_layout()
 
     system_params = AcquisitionParams(
@@ -88,7 +102,8 @@ if __name__ == "__main__":
             for evo_time in evolution_times
         ]
     )
-    plt.plot(evolution_times * 1e3, times_to_snr / 60, linewidth=2)
+    ax1.plot(evolution_times * 1e3, times_to_snr / 60, linewidth=2)
+    
     system_params = AcquisitionParams(
         photon_count_rate=1500e3,  # 1 MHz
         readout_time=1e-6,      # 1 ms
@@ -102,16 +117,17 @@ if __name__ == "__main__":
         ]
     )
 
-    plt.plot(evolution_times * 1e3, times_to_snr / 60, linewidth=2)
-    plt.legend(
+    ax1.plot(evolution_times * 1e3, times_to_snr / 60, linewidth=2)
+    ax1.legend(
         [
             "50k cps, 30% contrast (single NV)",
             "200k cps, 30% contrast (single NV - Pillared)",
-            "1.5M cps, 8% contrast (L035 Ensemble)",
+            "1.5M cps, 8% contrast (Depth = 165 nm Ensemble)",
         ]
+        , fontsize=18
     )
     plt.savefig(
-        "total_averaging_time.png", transparent=True, dpi=600, bbox_inches="tight"
+        "total_averaging_time.png", transparent=True, dpi=300, bbox_inches="tight"
     )
     plt.show(block=False)
     # Additional illustration: horizontal levels and arrows (saved separately)
@@ -132,7 +148,7 @@ if __name__ == "__main__":
 
     # make axis text larger and bold
     ylabel_fs = 16
-    tick_fs = 14
+    tick_fs = 18
     ax.set_ylabel("Normalized PL Signal", fontsize=ylabel_fs, fontweight="bold")
     ax.tick_params(axis='y', labelsize=tick_fs)
 
