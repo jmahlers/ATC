@@ -46,7 +46,7 @@ if __name__ == "__main__":
     
     # Set labels
     ax.set_xlabel(r'$\frac{\omega}{\omega_0}$', fontsize=32)
-    ax.set_ylabel('Temporal-Frequency Filter Function', fontsize=24)
+    # Remove Y-axis label per request; use title instead
     
     # Hide y-axis tick marks
     ax.yaxis.set_ticks([])
@@ -65,9 +65,9 @@ if __name__ == "__main__":
         arrowprops=dict(arrowstyle='<->', color='black', lw=2.2)
     )
     ax.text(
-        center + width*1.15,
+        center + width*1.6,
         half_amplitude-0.07,
-        r'$\frac{1}{T_{2}^{*}\!\!}$',
+        r'$\frac{1}{\omega_0\, T_{2}^{*}}$',
         fontsize=32,
         ha='center',
         va='bottom'
@@ -77,8 +77,9 @@ if __name__ == "__main__":
     ax.set_xlim(0, 2)
     ax.set_ylim(0, 1.1)
     
+    ax.set_title('Frequency Filter Function ($T_1$)', fontsize=34)
     ax.grid(True, alpha=0.35, linestyle='--')
     
     plt.tight_layout()
-    fig.savefig("delta_function.png", transparent=True, dpi=300, bbox_inches="tight")
+    fig.savefig("img/delta_function.png", transparent=True, dpi=300, bbox_inches="tight")
     plt.show()

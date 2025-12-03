@@ -89,9 +89,9 @@ ax1.text(xi_start * 1.5, sv_y - 0.005, r'$\xi_c$', fontsize=24, ha='left', va='c
 ax1.text(lambda_start * 1.2, sv_y - 0.005, r'$\lambda_{L}$', fontsize=24, ha='left', va='center', color='black')
 
 """Electron Transport length scales: mean free path (l_mc) and momentum relaxation (l_mr)."""
-# e^- Transport bar spanning from 80 nm to 4 μm
+# e^- Transport bar spanning from 80 nm to 10 μm
 et_start = 80e-9   # 80 nm
-et_end = 4e-6      # 4 μm
+et_end = 10e-6      # 10 μm
 
 et_y = 0.22
 et_height = 0.11
@@ -180,7 +180,7 @@ ax2.grid(True, which='major', axis='x', alpha=0.4, linestyle='-', linewidth=1.5,
 ax2.set_axisbelow(True)
 
 # Title for lower plot - placed above the plot area
-ax2.set_title('Accessible Length Scales', fontsize=36, fontweight='bold', pad=20)
+ax2.set_title('Measurable Length Scales', fontsize=36, fontweight='bold', pad=20)
 
 # Single NV bar (6 nm to 1 mm, XYZ Resolved) - TOP bar
 single_nv_start = 6e-9  # 6 nm
@@ -252,7 +252,7 @@ ax2.legend(handles=[hatched_proxy, solid_proxy], loc='upper left', fontsize=18, 
 plt.tight_layout()
 
 # Save high-resolution figure
-plt.savefig('spatial_scales.png', transparent=True, dpi=300, bbox_inches='tight')
+plt.savefig(r'./img/spatial_scales.png', transparent=True, dpi=300, bbox_inches='tight')
 print("Saved 'spatial_scales.png'")
 
 plt.show()
